@@ -42,8 +42,8 @@ defmodule LoadTestTest do
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"}, load: :ci_full_name)
       |> Ash.update!()
 
-    refute is_struct(updated.full_name, Ash.NotLoaded)
-    assert updated.full_name.string == "a b"
+    refute is_struct(updated.ci_full_name, Ash.NotLoaded)
+    assert updated.ci_full_name.string == "c d"
   end
 
   @tag :skip
@@ -52,8 +52,8 @@ defmodule LoadTestTest do
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"})
       |> Ash.update!(load: :ci_full_name)
 
-    refute is_struct(updated.full_name, Ash.NotLoaded)
-    assert updated.full_name.string == "a b"
+    refute is_struct(updated.ci_full_name, Ash.NotLoaded)
+    assert updated.ci_full_name.string == "c d"
   end
 
   @tag :skip
@@ -63,8 +63,8 @@ defmodule LoadTestTest do
       |> Ash.update!()
       |> Ash.load!(:ci_full_name)
 
-    refute is_struct(updated.full_name, Ash.NotLoaded)
-    assert updated.full_name.string == "a b"
+    refute is_struct(updated.ci_full_name, Ash.NotLoaded)
+    assert updated.ci_full_name.string == "c d"
   end
 
   # ci2string
@@ -74,8 +74,8 @@ defmodule LoadTestTest do
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"}, load: :ci2string_full_name)
       |> Ash.update!()
 
-    refute is_struct(updated.full_name, Ash.NotLoaded)
-    assert updated.full_name == "a b"
+    refute is_struct(updated.ci2string_full_name, Ash.NotLoaded)
+    assert updated.ci2string_full_name == "c d"
   end
 
   @tag :skip
@@ -84,8 +84,8 @@ defmodule LoadTestTest do
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"})
       |> Ash.update!(load: :ci2string_full_name)
 
-    refute is_struct(updated.full_name, Ash.NotLoaded)
-    assert updated.full_name == "a b"
+    refute is_struct(updated.ci2string_full_name, Ash.NotLoaded)
+    assert updated.ci2string_full_name == "c d"
   end
 
   @tag :skip
@@ -95,7 +95,7 @@ defmodule LoadTestTest do
       |> Ash.update!()
       |> Ash.load!(:ci2string_full_name)
 
-    refute is_struct(updated.full_name, Ash.NotLoaded)
-    assert updated.full_name == "a b"
+    refute is_struct(updated.ci2string_full_name, Ash.NotLoaded)
+    assert updated.ci2string_full_name == "c d"
   end
 end
