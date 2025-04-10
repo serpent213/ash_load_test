@@ -2,13 +2,28 @@ defmodule MyRes do
   use Ash.Resource,
     otp_app: :load_test,
     domain: Main,
-    data_layer: Ash.DataLayer.Ets
+    data_layer: AshPostgres.DataLayer
+
+  postgres do
+    table "my_res"
+    repo(Repo)
+  end
 
   actions do
     defaults [:read, :destroy, create: []]
 
     update :update do
       accept [:dummy]
+    end
+
+    update :update_with_load do
+      accept [:dummy]
+      change load(:full_name)
+    end
+
+    update :update_with_ci_load do
+      accept [:dummy]
+      change load([:ci_full_name, :ci2string_full_name])
     end
   end
 

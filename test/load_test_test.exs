@@ -3,7 +3,7 @@ defmodule LoadTestTest do
   doctest LoadTest
 
   setup_all do
-    {:ok, seed: Ash.Seed.seed!(MyRes, %{name1: "a", name2: "b", ci_name1: "c", ci_name2: "d"})}
+    {:ok, seed: Ash.Seed.seed!(MyRes, %{name1: "a", name2: "b", name1_ci: "c", name2_ci: "d"})}
   end
 
   # string
@@ -25,6 +25,15 @@ defmodule LoadTestTest do
     assert updated.full_name == "a b"
   end
 
+  test "string: load in action", %{seed: seed} do
+    updated =
+      Ash.Changeset.for_update(seed, :update_with_load, %{dummy: "foo"})
+      |> Ash.update!()
+
+    refute is_struct(updated.full_name, Ash.NotLoaded)
+    assert updated.full_name == "a b"
+  end
+
   test "string: explicit Ash.load", %{seed: seed} do
     updated =
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"})
@@ -36,7 +45,6 @@ defmodule LoadTestTest do
   end
 
   # ci_string
-  @tag :skip
   test "ci_string: for_update with load", %{seed: seed} do
     updated =
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"}, load: :ci_full_name)
@@ -46,7 +54,6 @@ defmodule LoadTestTest do
     assert updated.ci_full_name.string == "c d"
   end
 
-  @tag :skip
   test "ci_string: update with load", %{seed: seed} do
     updated =
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"})
@@ -56,7 +63,15 @@ defmodule LoadTestTest do
     assert updated.ci_full_name.string == "c d"
   end
 
-  @tag :skip
+  test "ci_string: load in action", %{seed: seed} do
+    updated =
+      Ash.Changeset.for_update(seed, :update_with_ci_load, %{dummy: "foo"})
+      |> Ash.update!()
+
+    refute is_struct(updated.full_name, Ash.NotLoaded)
+    assert updated.ci_full_name.string == "c d"
+  end
+
   test "ci_string: explicit Ash.load", %{seed: seed} do
     updated =
       Ash.Changeset.for_update(seed, :update, %{dummy: "foo"})

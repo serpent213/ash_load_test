@@ -1,6 +1,8 @@
 import Config
 
-config :load_test, ash_domains: [Main]
+config :load_test,
+  ash_domains: [Main],
+  ecto_repos: [Repo]
 
 config :ash,
   allow_forbidden_field_for_relationships_by_default?: true,
