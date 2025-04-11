@@ -2,6 +2,7 @@ defmodule MyRes do
   use Ash.Resource,
     otp_app: :load_test,
     domain: Main,
+    # data_layer: Ash.DataLayer.Ets
     data_layer: AshPostgres.DataLayer
 
   postgres do
@@ -24,6 +25,12 @@ defmodule MyRes do
     update :update_with_ci_load do
       accept [:dummy]
       change load([:ci_full_name, :ci2string_full_name])
+      change debug_log()
+    end
+
+    update :update_with_ci_load_sql do
+      accept [:dummy]
+      change load(:ci_full_name_sql)
     end
   end
 
@@ -53,5 +60,6 @@ defmodule MyRes do
     calculate :full_name, :string, expr(name1 <> " " <> name2)
     calculate :ci_full_name, :ci_string, expr(name1_ci <> " " <> name2_ci)
     calculate :ci2string_full_name, :string, expr(name1_ci <> " " <> name2_ci)
+    calculate :ci_full_name_sql, :ci_string, expr(fragment("name1_ci || ' ' || name2_ci"))
   end
 end
