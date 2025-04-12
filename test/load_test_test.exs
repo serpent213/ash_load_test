@@ -69,7 +69,7 @@ defmodule LoadTestTest do
         Ash.Changeset.for_update(seed, :update_with_ci_load, %{dummy: "foo"})
         |> Ash.update!()
 
-      refute is_struct(updated.full_name, Ash.NotLoaded)
+      refute is_struct(updated.ci_full_name, Ash.NotLoaded)
       assert updated.ci_full_name.string == "c d"
     end
 
